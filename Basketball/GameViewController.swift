@@ -10,35 +10,40 @@ import UIKit
 import SpriteKit
 
 class GameViewController: UIViewController {
-
+    
+    //! means were promising we will initialize "scene"
+    var scene: GameScene!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Configure the view
+        let skView = view as! SKView
+        //If finger is on iphone, you cant tap again
+        skView.multipleTouchEnabled = false
+        //skView.showsPhysics = true
+        
+        //Create and configure the scene
+        //create scene within size of skview
+        scene = GameScene(size:CGSize(width: 2048, height: 1536))
 
-        if let scene = GameScene(fileNamed:"GameScene") {
-            // Configure the view.
-            let skView = self.view as! SKView
-            skView.showsFPS = true
-            skView.showsNodeCount = true
-            
-            /* Sprite Kit applies additional optimizations to improve rendering performance */
-            skView.ignoresSiblingOrder = true
-            
-            /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .AspectFill
-            
-            skView.presentScene(scene)
-        }
+        //http://stackoverflow.com/questions/37197981/universal-app-background-spritekit
+        scene.scaleMode = .Fill
+        //scene.anchorPoint = CGPointZero
+        
+        //present the scene
+        skView.presentScene(scene)
+        
     }
-
     override func shouldAutorotate() -> Bool {
         return true
     }
 
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return .AllButUpsideDown
+            return .Landscape
         } else {
-            return .All
+            return .Landscape
         }
     }
 
